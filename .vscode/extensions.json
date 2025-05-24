@@ -1,0 +1,7 @@
+{
+  "recommendations": [
+    "ms-python.autopep8",
+    "pkief.material-icon-theme",
+    "ms-python.isort"
+  ]
+}

@@ -1,0 +1,26 @@
+name: new-relic-docker
+
+services:
+  app:
+    container_name: app
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        APP_PORT: 5005
+    ports:
+      - "5005:5005"
+    env_file:
+      - .env # NEW_RELIC_LICENSE_KEY=
+    deploy:
+      resources:
+        reservations:
+          cpus: "2"
+          memory: 2G
+    develop:
+      watch:
+        - action: sync
+          path: ./src
+          target: /app/src
+        - action: rebuild
+          path: .env

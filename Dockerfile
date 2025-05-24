@@ -1,25 +1,21 @@
-FROM alpine:3.14
-
-RUN apk add py3-pip \
-    && pip install --upgrade pip
+FROM python:3.13-slim
 
 WORKDIR /app
-COPY . /app/
-    
-RUN pip install -r src/requirements.txt
+COPY src /app/src
 
-EXPOSE 5000
+RUN pip3 install -r src/requirements.txt
 
-CMD ["python3", "src/application.py"]
+ARG APP_PORT
+ENV PORT=${APP_PORT:-5001}
+EXPOSE $PORT
 
-##Confguración New Relic
-RUN pip install newrelic
-ENV NEW_RELIC_APP_NAME="docker"
+# Confguración New Relic
+RUN pip3 install newrelic
+ENV NEW_RELIC_APP_NAME="heroes-flask-app"
 ENV NEW_RELIC_LOG=stdout
 ENV NEW_RELIC_DISTRIBUTED_TRACING_ENABLED=true
-#INGEST_License
-ENV NEW_RELIC_LICENSE_KEY=c74aef8d0f4a287c87f5cab9ec0c8ffe03bcNRAL
 ENV NEW_RELIC_LOG_LEVEL=info
-# etc.
+# INGEST_License
+ENV NEW_RELIC_LICENSE_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-ENTRYPOINT ["newrelic-admin", "run-program"]
+ENTRYPOINT ["newrelic-admin", "run-program", "python3", "src/application.py"]
