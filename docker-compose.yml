@@ -1,8 +1,8 @@
 name: new-relic-docker
 
 services:
-  app:
-    container_name: app
+  heroes-flask-app:
+    container_name: heroes-flask-app
     build:
       context: .
       dockerfile: Dockerfile

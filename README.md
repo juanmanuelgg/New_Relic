@@ -67,8 +67,10 @@ ab -n 10000 -c 25 http://localhost:5005/
 ```bash
 # python3 en linux; py en windows.
 
-# Crear el entorno la primera vez
+# Crear el entorno la primera vez en Linux
 python3 -m venv .venv
+# Crear el entorno la primera vez en Windows
+py -m venv .venv
 
 # Activar el entorno linux
 source .venv/bin/activate
@@ -80,11 +82,12 @@ source .venv/Scripts/activate
 # Instala las dependencias en el entorno
 pip3 install -r src/requirements.txt
 # pip3 install flask
-# pip3 install gunicorn # TODO: Mejorar esto (WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.)
-# pip3 freeze > src/requirements.txt
+# pip3 install python-dotenv
+# pip3 install gunicorn
+# pip3 freeze > requirements.txt
 
 # Ejecuta la aplicación
-FLASK_APP=src/application.py flask run
+FLASK_APP=application.py flask run
 
 # Desactivar el entorno (requiere: Activar el entorno)
 deactivate

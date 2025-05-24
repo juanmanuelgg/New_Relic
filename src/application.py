@@ -3,9 +3,8 @@ import os
 from dotenv import load_dotenv
 from flask import Flask, jsonify
 
-import funtions as f
+from src import functions as f
 
-load_dotenv()
 application = Flask(__name__)
 data = f.load_file('./src/heroes.csv')
 
@@ -29,5 +28,6 @@ def heroe(id):
 
 
 if __name__ == "__main__":
+    load_dotenv()
     PORT: int = int(os.getenv('PORT', default='5002'))
     application.run(host="0.0.0.0", port=PORT, debug=True)

@@ -1,13 +1,10 @@
 FROM python:3.13-slim
 
 WORKDIR /app
-COPY src /app/src
+RUN mkdir -p /app/src
 
-RUN pip3 install -r src/requirements.txt
-
-ARG APP_PORT
-ENV PORT=${APP_PORT:-5001}
-EXPOSE $PORT
+COPY requirements.txt /app/requirements.txt
+RUN pip3 install -r requirements.txt
 
 # Confguración New Relic
 RUN pip3 install newrelic
@@ -18,4 +15,14 @@ ENV NEW_RELIC_LOG_LEVEL=info
 # INGEST_License
 ENV NEW_RELIC_LICENSE_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-ENTRYPOINT ["newrelic-admin", "run-program", "python3", "src/application.py"]
+COPY application.py /app/application.py
+COPY src /app/src
+
+ARG APP_PORT
+ENV PORT=${APP_PORT:-5001}
+EXPOSE $PORT
+
+# Para desarrollo
+# ENTRYPOINT ["newrelic-admin", "run-program", "python3", "application.py"]
+
+ENTRYPOINT ["newrelic-admin", "run-program", "gunicorn", "--workers=2", "application:application"]
